@@ -1,0 +1,60 @@
+/* AppliedJobs.module.css */
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.jobsList {
+  list-style: none;
+  padding: 0;
+}
+
+.jobItem {
+  margin-bottom: 15px;
+}
+
+.jobCard {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.jobCard:hover {
+  transform: translateY(-5px);
+}
+
+.jobTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.jobDescription {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.jobAppliedAt {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.noJobsMessage {
+  font-size: 1.2rem;
+  color: #777;
+  text-align: center;
+  margin-top: 40px;
+}

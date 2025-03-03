@@ -1,0 +1,160 @@
+.loginForm {
+  padding: 100px 0;
+}
+
+.loginForm i {
+  font-size: 14px;
+}
+
+.latestForm .form-group {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.latestForm .form-control-placeholder {
+  position: absolute;
+  top: 18px;
+  transition: 0.5s ease;
+  color: #7e7373;
+  left: 20px;
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.latestForm .form-control:focus + .form-control-placeholder,
+.latestForm .form-control:valid + .form-control-placeholder {
+  font-size: 10.62px !important;
+  transform: translate3d(0, -100%, 0);
+  opacity: 1;
+  background: #fff;
+  top: 8px;
+}
+
+.srchBar .form-control:focus + .form-control-placeholder,
+.srchBar .form-control:valid + .form-control-placeholder {
+  width: 75px;
+}
+
+.latestForm .form-control {
+  background: transparent;
+  border: 1px solid #7e7373;
+  transition: 0.5s;
+  height: calc(1.5em + 0.75rem + 20px);
+  padding: 8px 55px 8px 25px;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.latestForm input.form-control:focus,
+.latestForm input.form-control:after {
+  outline-width: 0;
+  border: 1px solid #282b4a;
+  background: transparent;
+}
+
+.latestForm i.iconSet {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: #7e7373;
+  width: 40px;
+  text-align: center;
+}
+
+.latestForm .form-control:focus i.iconSet {
+  color: #ff4153 !important;
+}
+
+.loginForm input[type="submit"] {
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 18.62px;
+  margin-bottom: 100px !important;
+}
+
+.loginForm h3 {
+  margin-bottom: 50px;
+}
+
+.loginForm label.custom-control-label {
+  padding-top: 3px;
+  color: #282b4a;
+}
+
+.loginForm .custom-checkbox .custom-control-label::before {
+  border-radius: 0;
+}
+
+.loginForm .custom-control-input:checked ~ .custom-control-label::before {
+  background: #282b4a;
+  border-color: #282b4a;
+}
+
+.loginForm a.forgotPwd {
+  color: #4b4b4b;
+}
+
+.loginForm a.clickHere {
+  font-weight: 600 !important;
+  color: #282b24;
+}
+
+.loginForm .btn-floating {
+  font-size: 14.96px;
+  padding: 10px 35px;
+}
+
+/* ==== btn-danger ==== */
+.loginForm .btn-danger.btn-floating {
+  background: #d54b3e !important;
+  border: 1px solid #d54b3e !important;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-transition-duration: 0.5s !important;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-box-shadow: 50px 0px 0 0 #d54b3e inset, -50px 0px 0 #d54b3e inset;
+}
+
+.loginForm .btn-danger.btn-floating:hover {
+  background: #ec2411 !important;
+  border: 1px solid #ec2411 !important;
+  -webkit-box-shadow: 0px 0px 0 0 #d54b3e inset, 0px 0px 0 #d54b3e inset;
+}
+
+/* ==== btn-primary ==== */
+.loginForm .btn-primary.btn-floating {
+  border: 1px solid #4268b3;
+  background: #4268b3;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-transition-duration: 0.5s !important;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-box-shadow: 50px 0px 0 0 #4268b3 inset, -50px 0px 0 #4268b3 inset;
+}
+
+.loginForm .btn-primary.btn-floating:hover {
+  background: #0069d9;
+  border: 1px solid #0069d9;
+  -webkit-box-shadow: 0px 0px 0 0 #4268b3 inset, 0px 0px 0 #4268b3 inset;
+}
+
+/* ==== btn-info ==== */
+.loginForm .btn-info.btn-floating {
+  border: 1px solid #00cdff;
+  background: #00cdff;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-transition-duration: 0.5s !important;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-box-shadow: 50px 0px 0 0 #00cdff inset, -50px 0px 0 #00cdff inset;
+}
+
+.loginForm .btn-info.btn-floating:hover {
+  background: #0d99bc;
+  border: 1px solid #0d99bc;
+  -webkit-box-shadow: 0px 0px 0 0 #00cdff inset, 0px 0px 0 #00cdff inset;
+}
+
+.loginForm .form-check-input:checked {
+  border-color: #282b4a !important;
+  background-color: #282b4a !important;
+}
