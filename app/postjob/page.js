@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { toast } from "react-toastify";
-import Header from "../components/Header";
 
 const PostJob = () => {
   const [jobDetails, setJobDetails] = useState({
@@ -131,7 +130,7 @@ const handleFileChange = async (e) => {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <div className="flex justify-between p-3">
         <div>
           <h1 className="font-bold text-[#282b4a] text-[45.87px]">

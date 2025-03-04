@@ -3,12 +3,15 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import Header from "../../components/Header";
 
 const JobDetails = () => {
   const [jobData, setJobData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [applying, setApplying] = useState(false);
+  const [hasApplied, setHasApplied] = useState(false);
   const [resumeFile, setResumeFile] = useState(null);
+  const [userRole, setUserRole] = useState(null); // To store user role
+  const [userId, setUserId] = useState(null); // To store the user's ID
   const params = useParams();
   const router = useRouter();
   const { id } = params;
@@ -16,34 +19,57 @@ const JobDetails = () => {
   useEffect(() => {
     if (id) {
       fetchJobDetails(id);
+      // fetchUserRole(); // Fetch the current user role when the component mounts
     }
   }, [id]);
 
+  // Fetch job details
   const fetchJobDetails = async (jobId) => {
     setLoading(true);
     try {
       const response = await fetch(`http://localhost:4000/api/jobs/${jobId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch job details");
-      }
+      if (!response.ok) throw new Error("Failed to fetch job details");
       const data = await response.json();
       setJobData(data);
     } catch (error) {
-      console.error("Error fetching job details:", error);
       toast.error("Failed to fetch job details");
     } finally {
       setLoading(false);
     }
   };
 
+  // Fetch the current user's role
+  // const fetchUserRole = async () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+  //   try {
+  //     const response = await fetch("http://localhost:4000/api/user/me", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     setUserRole(data.user.role);
+  //     setUserId(data.id); // Store the user's ID
+  //   } catch (error) {
+  //     console.error("Failed to fetch user role", error);
+  //   }
+  // };
+
+  // Handle file input change
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setResumeFile(file);
   };
 
+  // Handle job application
   const handleApply = async () => {
-    const token = localStorage.getItem("token");
+    if (hasApplied) {
+      toast.warning("You have already applied for this job.");
+      return;
+    }
 
+    const token = localStorage.getItem("token");
     if (!token) {
       toast.error("You must be logged in to apply.");
       router.push(`/auth/login?redirect=/jobs/${id}`);
@@ -55,56 +81,61 @@ const JobDetails = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", resumeFile);
-    formData.append("upload_preset", "job_applications");
-    formData.append("cloud_name", "dm6crryf2");
-    formData.append("resource_type", "raw");
+    setApplying(true);
 
     try {
+      const formData = new FormData();
+      formData.append("file", resumeFile);
+      formData.append("upload_preset", "job_applications");
+      formData.append("cloud_name", "dm6crryf2");
+      formData.append("resource_type", "raw");
+
       const cloudinaryResponse = await fetch(
         `https://api.cloudinary.com/v1_1/dm6crryf2/raw/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
+        { method: "POST", body: formData }
       );
 
       const cloudinaryData = await cloudinaryResponse.json();
-      console.log(cloudinaryData);
-      if (!cloudinaryData.secure_url) {
+      if (!cloudinaryData.secure_url)
         throw new Error("Cloudinary upload failed");
-      }
 
       const resumeUrl = cloudinaryData.secure_url;
 
-      const response = await fetch("http://localhost:4000/api/application/apply", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ jobId: id, resumeUrl }),
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/application/apply",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ jobId: id, resumeUrl }),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
         toast.success("Successfully applied!");
+        setHasApplied(true);
       } else {
         toast.error(data.message || "Failed to apply.");
       }
     } catch (error) {
-      console.error("Error uploading resume:", error);
       toast.error("Failed to upload resume or apply for job");
+    } finally {
+      setApplying(false);
     }
   };
 
   if (loading) return <div>Loading...</div>;
   if (!jobData) return <div>No job details available</div>;
 
+  // Disable the Apply button if the user is an employer and owns the job
+  const isEmployer = userRole === "employer";
+  const isOwnJob = jobData.employer === userId; // Compare with user ID, not the role
+
   return (
     <div>
-      <Header />
       <div className="flex justify-between p-20">
         <div>
           <h1 className="font-bold text-[#282b4a] text-[45.87px]">
@@ -123,16 +154,15 @@ const JobDetails = () => {
           />
         </div>
       </div>
+
       <div className="p-20">
         <div className="flex gap-2 items-center">
-          <div>
-            <Image
-              width={100}
-              height={100}
-              src={jobData.image}
-              alt="image is loading"
-            />
-          </div>
+          <Image
+            width={100}
+            height={100}
+            src={jobData.image}
+            alt="image is loading"
+          />
           <div>
             <h3 className="font-bold text-[#282b4a] text-[25.87px]">
               {jobData.title}
@@ -155,18 +185,34 @@ const JobDetails = () => {
             ))}
           </ul>
         </div>
-        <div>
-          <label className="font-bold text-[#282b4a]">Upload your Resume (PDF)</label>
-          <input 
-            type="file" 
-            accept=".pdf" 
-            onChange={handleFileChange} 
-            className="mt-2" 
-          />
-        </div>
-        <button className="btn btn-primary mt-4" onClick={handleApply}>
-          Apply Now
-        </button>
+
+        {!hasApplied && !isEmployer && !isOwnJob ? (
+          <>
+            <div>
+              <label className="font-bold text-[#282b4a]">
+                Upload your Resume (PDF)
+              </label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={handleFileChange}
+                className="mt-2"
+              />
+            </div>
+            <button
+              className="btn btn-primary mt-4"
+              onClick={handleApply}
+              // disabled={applying || isEmployer || isOwnJob || hasApplied}
+            >
+              {applying ? "Applying..." : "Apply Now"}
+            </button>
+          </>
+      
+        ) : (
+          <div className="mt-4 text-green-600 font-bold">
+            Already applied for this job
+          </div>
+        )}
       </div>
     </div>
   );

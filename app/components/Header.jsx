@@ -48,7 +48,7 @@ const Header = () => {
                 <Link href="/">Home</Link>
               </li>
               <li>
-                <Link href="/">About</Link>
+                <Link href="/aboutus">About</Link>
               </li>
               <li>
                 <Link href="/jobs">jobs</Link>
@@ -71,7 +71,7 @@ const Header = () => {
               <Link href="/">Home</Link>
             </li>
             <li>
-              <Link href="/">About</Link>
+              <Link href="/aboutus">About</Link>
             </li>
             <li>
               <Link href="/jobs">jobs</Link>
@@ -88,12 +88,11 @@ const Header = () => {
                 {/* Only show if logged in and employer */}
               </li>
             )}
-            {isLoggedIn && role === "jobSeeker" && (
-              <li>
-                <Link href="/job-seeker/myapplied">My applied</Link>{" "}
-                {/* Only show if logged in and employer */}
-              </li>
-            )}
+
+            <li>
+              <Link href="/job-seeker/myapplied">My applied</Link>{" "}
+              {/* Only show if logged in and employer */}
+            </li>
           </ul>
         </div>
         <div className="navbar-end">

@@ -1,5 +1,4 @@
 "use client";
-import Header from '@/app/components/Header';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -137,7 +136,7 @@ export default function EditJob() {
 
   return (
     <div>
-      <Header />
+   
       <div className="container mx-auto p-8">
         <div className="max-w-4xl mx-auto p-6 rounded-lg">
           <h1 className="text-[45.87px] font-bold text-[#282b4a] text-center mb-6">

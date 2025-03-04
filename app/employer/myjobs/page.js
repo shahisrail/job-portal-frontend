@@ -1,5 +1,4 @@
 "use client";
-import Header from "@/app/components/Header";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -84,7 +83,7 @@ export default function MyJobs() {
 
   return (
     <div>
-      <Header />
+     
       <h1>Your Posted Jobs</h1>
       {jobs.length === 0 ? (
         <div>No jobs found.</div>
@@ -156,7 +155,7 @@ export default function MyJobs() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start mt-10">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-lg font-bold">
               {isEditing
@@ -191,6 +190,7 @@ export default function MyJobs() {
           </div>
         </div>
       )}
+
     </div>
   );
 }

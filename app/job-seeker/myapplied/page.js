@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import Header from "@/app/components/Header";
 import { useEffect, useState } from "react";
 
 const AppliedJobsPage = () => {
@@ -45,18 +44,24 @@ const AppliedJobsPage = () => {
 
   return (
     <>
-      <Header />
       <div className="container mx-auto p-5 bg-gray-50">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Applied Jobs</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+          Your Applied Jobs
+        </h1>
 
         {appliedJobs && appliedJobs.length > 0 ? (
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {appliedJobs.map((job) => (
-              <li key={job._id} className="bg-white p-5 border border-gray-200 rounded-lg shadow-md">
+              <li
+                key={job._id}
+                className="bg-white p-5 border border-gray-200 rounded-lg shadow-md"
+              >
                 <div>
                   <h2 className="text-xl text-blue-500">{job.job.title}</h2>
                   <p className="text-gray-700 my-2">{job.job.description}</p>
-                  <p className="text-sm text-gray-500">Applied at: {new Date(job.appliedAt).toLocaleDateString()}</p>
+                  <p className="text-sm text-gray-500">
+                    Applied at: {new Date(job.appliedAt).toLocaleDateString()}
+                  </p>
                 </div>
               </li>
             ))}

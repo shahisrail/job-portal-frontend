@@ -1,14 +1,13 @@
-import Banner from '../components/Banner';
-import Header from '../components/Header';
+import Banner from "../components/Banner";
+import Homejobs from "../components/homejobs";
 
 const HomePage = () => {
-    return (
-
-        <div>
-            <Header/>
-            <Banner/>
-        </div>
-    );
+  return (
+    <div>
+      <Banner />
+      <Homejobs/>
+    </div>
+  );
 };
 
 export default HomePage;

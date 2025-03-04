@@ -1,0 +1,37 @@
+.daimond-bg {
+  height: 55px;
+  width: 55px;
+  background-color: #ff4153;
+  transform: rotate(45deg);
+  margin: 0px auto;
+  transition: 0.5sease;
+}
+.daimond-bg2 {
+  height: 55px;
+  width: 55px;
+  background-color: #282b4a;
+  transform: rotate(45deg);
+  margin: 0px auto;
+  transition: 0.5sease;
+}
+.daimond-bg1 {
+  transform: rotate(315deg);
+  margin: 0px auto;
+  height: 50px;
+  width: 50px;
+}
+.interinner h2 {
+  font-size: 21.28px !important;
+  margin: 40px 0 25px;
+}
+.bgnumber {
+  /* background-image: url(../images/about-us/bg.png); */
+  background: #ff4153;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: auto;
+  padding: 90px;
+  width: 100%;
+  margin-top: 60px;
+}

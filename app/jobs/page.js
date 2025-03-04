@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import Header from "../components/Header";
 
 const Page = () => {
   const [jobData, setJobData] = useState([]); // To hold job data
@@ -46,7 +45,7 @@ const Page = () => {
 
   return (
     <div>
-      <Header />
+     
       <div className="flex justify-between p-20">
         <div>
           <h1 className="font-bold text-[#282b4a] text-[45.87px]">Your dream Job</h1>
