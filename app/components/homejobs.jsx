@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaCube } from "react-icons/fa";
-
+import "../loading.css";
 const Homejobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,9 +11,15 @@ const Homejobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/jobs");
+        const response = await fetch("https://job-portal-backend-lake.vercel.app/api/jobs");
         const data = await response.json();
-        setJobs(data.slice(0, 6)); // Only take the latest 6 jobs
+
+        // Sort jobs by createdAt or similar field in descending order
+        const sortedJobs = data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        setJobs(sortedJobs.slice(0, 6)); // Take the latest 6 jobs after sorting
       } catch (error) {
         console.error("Error fetching jobs:", error);
       } finally {
@@ -33,68 +39,50 @@ const Homejobs = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-5">
-      {jobs.map((job, index) => (
-        <div key={index} className="relative group mb-8 flex flex-col h-full overflow-hidden">
-          {/* Job Box Image */}
-          <div className="relative flex-grow">
-            <Image
-              className="w-full h-[500px] object-cover rounded-3xl"
-              width={500}
-              height={300}
-              src={job.image}
-              alt={job.title}
-              priority={true} // Make sure image loads first
-            />
-            {/* Gray Overlay */}
-            <div className="absolute inset-0 bg-gray-900 opacity-50 rounded-3xl"></div>
-          </div>
+    <>
+      <h1 className="font-bold text-[#282b4a] text-center text-[51.87px]">
+        Our Latestd{" "}
+        <span className="font-bold text-[#ff4153] text center text-[51.23px]">
+          Job
+        </span>
+      </h1>
 
-          {/* Job Box Content */}
-          <div className="absolute left-0 right-0 bottom-1/4 text-center text-white">
-            <h3 className="text-[24.13px] mb-7">{job.title}</h3>
-            <button
-              type="button"
-              className="text-white border-2 border-[#d98813] rounded-none font-semibold px-3 py-1.5 h-7 leading-none text-[14.58px]"
-            >
-              Apply Now
-            </button>
-          </div>
-
-          {/* Job Box Hover */}
-          <div className="absolute inset-0 opacity-0 z-[-1] border-2 border-transparent rounded-3xl transform perspective-400 rotate-x-[-90deg] origin-top group-hover:opacity-100 group-hover:z-10 group-hover:rotate-x-0 transition-all duration-1000 group-hover:h-[80%] group-hover:scale-105">
-            <div className="card border-2 border-[#2a3b4a] rounded-3xl h-full bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-5">
+        {jobs.map((job, index) => (
+          <div
+            key={index}
+            className="relative group mb-8 flex flex-col h-full overflow-hidden rounded-3xl border-2 border-gray-300 shadow-lg hover:shadow-xl transition-shadow duration-300"
+          >
+            {/* Job Box Image */}
+            <div className="relative flex-grow overflow-hidden rounded-3xl">
               <Image
-                className="card-img-top w-full rounded-3xl object-cover"
-                src={job.image} // Assuming hover image URL in the API response
+                className="w-full h-[300px] object-cover rounded-3xl"
+                width={500}
+                height={300}
+                src={job.image}
                 alt={job.title}
-                width={300}
-                height={200}
-                priority={true}
+                priority={true} // Make sure image loads first
               />
-              <div className="absolute left-0 right-0 bottom-1/4 text-center text-white">
-                <FaCube className="text-2xl text-center text-red-600" />
-                <h3>{job.title}</h3>
-              </div>
-              <div className="card-body text-left bg-white text-black">
-                <h4>{job.title}</h4>
-                <ul className="list-none mb-0">
-                  <li>{job.location}</li>
-                  <li>Salary: {job.salary}</li>
-                  <li>Country: {job.country}</li>
-                </ul>
-              </div>
-              <a
-                href={job.detailsLink}
-                className="block text-center py-2 px-4 mt-2 text-black rounded-full"
-              >
-                Apply Now
-              </a>
+              {/* Gray Overlay */}
+              <div className="absolute inset-0 bg-gray-900 opacity-50 rounded-3xl"></div>
             </div>
+
+            {/* Job Box Content */}
+            <div className="absolute left-0 right-0 bottom-1/4 text-center text-white p-4 z-10  transition-opacity duration-300">
+              <h3 className="text-2xl font-semibold mb-5">{job.title}</h3>
+
+              <Link href={`/jobs/${job._id}`}>
+                <button className="bg-[#d98813] text-white rounded-full px-6 py-2 text-lg font-semibold shadow-lg hover:bg-[#d47910] transition duration-300">
+                  Apply Now
+                </button>
+              </Link>
+            </div>
+
+            {/* Job Box Hover Details */}
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 };
 

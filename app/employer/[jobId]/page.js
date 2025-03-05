@@ -20,7 +20,7 @@ export default function JobApplicants() {
 
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:4000/api/jobs/${jobId}/applicants`,
+          `https://job-portal-backend-lake.vercel.app/api/jobs/${jobId}/applicants`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -25,7 +25,7 @@ export default function EditJob() {
     if (id) {
       const fetchJob = async () => {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:4000/api/jobs/${id}`, {
+        const res = await fetch(`https://job-portal-backend-lake.vercel.app/api/jobs/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -51,7 +51,7 @@ export default function EditJob() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:4000/api/jobs/${id}`, {
+      const res = await fetch(`https://job-portal-backend-lake.vercel.app/api/jobs/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

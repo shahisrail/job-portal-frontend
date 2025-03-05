@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const JobDetails = () => {
@@ -10,8 +11,8 @@ const JobDetails = () => {
   const [applying, setApplying] = useState(false);
   const [hasApplied, setHasApplied] = useState(false);
   const [resumeFile, setResumeFile] = useState(null);
-  const [userRole, setUserRole] = useState(null); // To store user role
-  const [userId, setUserId] = useState(null); // To store the user's ID
+  const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null);
   const params = useParams();
   const router = useRouter();
   const { id } = params;
@@ -19,7 +20,7 @@ const JobDetails = () => {
   useEffect(() => {
     if (id) {
       fetchJobDetails(id);
-      // fetchUserRole(); // Fetch the current user role when the component mounts
+      fetchUserDetails(); // Fetch user role and ID on component mount
     }
   }, [id]);
 
@@ -27,7 +28,7 @@ const JobDetails = () => {
   const fetchJobDetails = async (jobId) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:4000/api/jobs/${jobId}`);
+      const response = await fetch(`https://job-portal-backend-lake.vercel.app/api/jobs/${jobId}`);
       if (!response.ok) throw new Error("Failed to fetch job details");
       const data = await response.json();
       setJobData(data);
@@ -38,23 +39,24 @@ const JobDetails = () => {
     }
   };
 
-  // Fetch the current user's role
-  // const fetchUserRole = async () => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
-  //   try {
-  //     const response = await fetch("http://localhost:4000/api/user/me", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     const data = await response.json();
-  //     setUserRole(data.user.role);
-  //     setUserId(data.id); // Store the user's ID
-  //   } catch (error) {
-  //     console.error("Failed to fetch user role", error);
-  //   }
-  // };
+  // Fetch authenticated user role and ID
+  const fetchUserDetails = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const response = await fetch("https://job-portal-backend-lake.vercel.app/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userData = await response.json();
+        setUserRole(userData.role);
+        setUserId(userData.id);
+      } catch (error) {
+        console.error("Failed to fetch user details", error);
+      }
+    }
+  };
 
   // Handle file input change
   const handleFileChange = (e) => {
@@ -102,7 +104,7 @@ const JobDetails = () => {
       const resumeUrl = cloudinaryData.secure_url;
 
       const response = await fetch(
-        "http://localhost:4000/api/application/apply",
+        "https://job-portal-backend-lake.vercel.app/api/application/apply",
         {
           method: "POST",
           headers: {
@@ -127,89 +129,91 @@ const JobDetails = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (!jobData) return <div>No job details available</div>;
+  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (!jobData)
+    return <div className="text-center py-10">No job details available</div>;
 
   // Disable the Apply button if the user is an employer and owns the job
   const isEmployer = userRole === "employer";
-  const isOwnJob = jobData.employer === userId; // Compare with user ID, not the role
+  const isOwnJob = jobData.employer === userId;
 
   return (
-    <div>
-      <div className="flex justify-between p-20">
+    <div className="bg-gray-50 min-h-screen py-10">
+      <div className="flex justify-between mb-8 p-10">
         <div>
-          <h1 className="font-bold text-[#282b4a] text-[45.87px]">
-            Your dream Job
+          <h1 className="font-semibold text-4xl text-[#282b4a]">
+            Your Dream Job
           </h1>
-          <h6 className="font-bold text-[#ff4153] text-[35.23px]">
-            Is Near to You
-          </h6>
+          <h2 className="text-2xl text-[#ff4153] mt-2">Is Waiting for You</h2>
         </div>
         <div>
           <Image
             src="/singup.png"
             alt="Signup illustration"
-            width={900}
-            height={900}
+            width={700}
+            height={700}
+            className="rounded-lg shadow-xl"
           />
         </div>
       </div>
-
-      <div className="p-20">
-        <div className="flex gap-2 items-center">
-          <Image
-            width={100}
-            height={100}
-            src={jobData.image}
-            alt="image is loading"
-          />
+      <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+        <div className="flex gap-6 items-center mb-6">
+          <div className="w-32 h-32 overflow-hidden rounded-full border-2 border-[#ff4153]">
+            <Image
+              src={jobData.image}
+              alt="Job Image"
+              width={120}
+              height={120}
+              className="object-cover w-full h-full"
+            />
+          </div>
           <div>
-            <h3 className="font-bold text-[#282b4a] text-[25.87px]">
+            <h3 className="font-bold text-xl text-[#282b4a]">
               {jobData.title}
             </h3>
-            <p className="text-[#ff4153] text-[20.23px]">{jobData.location}</p>
+            <div className="flex items-center text-gray-500">
+              <FaMapMarkerAlt className="text-red-500 mr-2" />
+              {jobData.location}
+            </div>
           </div>
         </div>
 
-        <div>
-          <h3 className="font-bold text-[#282b4a] text-[25px]">
-            Job Description
-          </h3>
-          <p>{jobData.description}</p>
+        <div className="mb-6">
+          <h3 className="font-bold text-xl text-[#282b4a]">Job Description</h3>
+          <p className="text-lg text-gray-700 mt-2">{jobData.description}</p>
         </div>
-        <div>
-          <h3 className="font-bold text-[#282b4a] text-[25px]">Requirements</h3>
-          <ul>
+
+        <div className="mb-6">
+          <h3 className="font-bold text-xl text-[#282b4a]">Requirements</h3>
+          <ul className="list-disc list-inside mt-2">
             {jobData.requirements?.map((req, index) => (
-              <li key={index}>{req.value}</li>
+              <li key={index} className="text-lg text-gray-700">
+                {req.value}
+              </li>
             ))}
           </ul>
         </div>
 
         {!hasApplied && !isEmployer && !isOwnJob ? (
-          <>
-            <div>
-              <label className="font-bold text-[#282b4a]">
-                Upload your Resume (PDF)
-              </label>
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={handleFileChange}
-                className="mt-2"
-              />
-            </div>
+          <div className="mt-6">
+            <label className="block font-semibold text-[#282b4a]">
+              Upload Your Resume (PDF)
+            </label>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={handleFileChange}
+              className="mt-2 p-2 border border-gray-300 rounded-md w-full"
+            />
             <button
-              className="btn btn-primary mt-4"
+              className="btn btn-primary mt-4 px-6 py-3 bg-[#ff4153] text-white rounded-lg hover:bg-[#ff2a3b]"
               onClick={handleApply}
-              // disabled={applying || isEmployer || isOwnJob || hasApplied}
             >
               {applying ? "Applying..." : "Apply Now"}
             </button>
-          </>
-      
+          </div>
         ) : (
-          <div className="mt-4 text-green-600 font-bold">
+          <div className="mt-6 text-green-600 font-semibold">
             Already applied for this job
           </div>
         )}

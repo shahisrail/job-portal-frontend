@@ -3,9 +3,8 @@ import Image from "next/image";
 const Banner = () => {
   return (
     <>
-      <div className="relative h-[1000px]   ">
-        {" "}
-        {/* Adjust the height as needed */}
+      <div className="relative h-[1000px] flex justify-between gap-10 ">
+        {/* Background Image */}
         <div className="absolute top-0 left-0 right-0 bottom-0 z-0">
           <Image
             src={"/first-banner.png"}
@@ -14,27 +13,27 @@ const Banner = () => {
             objectFit="cover"
           />
         </div>
-        <div className="relative z-10 flex justify-between items-center p-10 space-y-4">
-          <div>
-            <h1 className="font-bold text-[#282b4a] text-[51.87px]">
-              Find Your Favourite
-            </h1>
-            <h6 className="font-bold text-[#ff4153] text-[41.23px]">
-              Job Immediate
-            </h6>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut non{" "}
-              <br />
-              facere architecto, atque, voluptate error libero animi aliquam{" "}
-              <br />
-              pariatur vero quia placeat commodi veniam necessitatibus. Delectus{" "}
-              <br />
-              provident repellendus fuga saepe.
-            </p>
-          </div>
+
+        {/* Text Content */}
+        <div className="relative z-10 p-10 space-y-4 text-center">
+          <h1 className="font-bold text-[#282b4a] text-[51.87px]">
+            Find Your Favourite
+          </h1>
+          <h6 className="font-bold text-[#ff4153] text-[41.23px]">
+            Job Immediate
+          </h6>
+          <p>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut non{" "}
+            <br />
+            facere architecto, atque, voluptate error libero animi aliquam{" "}
+            <br />
+            pariatur vero quia placeat commodi veniam necessitatibus. Delectus{" "}
+            <br />
+            provident repellendus fuga saepe.
+          </p>
         </div>
       </div>
-      
+
       <div className="flex justify-stretch items-center p-10 space-y-4 mt-10">
         <div>
           <Image

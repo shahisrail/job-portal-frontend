@@ -16,7 +16,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:4000/api/auth/register", {
+    const res = await fetch("https://job-portal-backend-lake.vercel.app/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -132,5 +132,4 @@ export default function Signup() {
     </>
   );
 }
-
-// Let me know if you need anything else! 🚀
+ 
