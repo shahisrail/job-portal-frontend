@@ -1,17 +1,18 @@
 "use client";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../auth.css";
 
-export default function Login() {
+function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,9 +36,9 @@ export default function Login() {
         const currentPath = window.location.pathname;
 
         if (redirect && currentPath !== redirect) {
-          router.push(redirect); // Redirect only if not already on the page
+          router.push(redirect);
         } else if (!redirect) {
-          router.push("/"); // Fallback to home only if no redirect param
+          router.push("/");
         }
       }, 3000);
     } else {
@@ -119,4 +120,10 @@ export default function Login() {
   );
 }
 
-// Let me know if you want me to tweak anything else! 🚀
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
